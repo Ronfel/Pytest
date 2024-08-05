@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 import conftest
 import time
-from tests.test_login import LoginPage
+from pages.loginPage import LoginPage
 import pytest
 
 
