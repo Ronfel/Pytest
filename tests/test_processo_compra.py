@@ -1,39 +1,36 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
+import conftest
 import time
+from tests.test_login import LoginPage
+import pytest
 
-browser = webdriver.Chrome()
 
-browser.get("https://www.google.com")
+@pytest.mark.usefixtures("setup_teardown")
+@pytest.mark.carrinho
+class TesteCT02:
+    def test_ct02_adicionar_produtos_carrinho(self):
+        #login
+        driver = conftest.driver
 
-browser.maximize_window()
-browser.implicitly_wait(5)
+        login = LoginPage()
 
-browser.get("https://www.saucedemo.com/v1/")
-#login
-username = browser.find_element(By.ID, "user-name")
-password = browser.find_element(By.ID, "password")
-button = browser.find_element(By.ID, "login-button")
+        login.fazer_login("standard_user","secret_sauce")
 
-username.send_keys("standard_user")
-password.send_keys("secret_sauce")
-button.click()
+        #Add item
+        driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text() = 'Sauce Labs Backpack']").click()
+        driver.find_element(By.XPATH, "//*[text()='ADD TO CART']").click()
 
-#Add item
-browser.find_element(By.XPATH, "//*[@class='inventory_item_name' and text() = 'Sauce Labs Backpack']").click()
-browser.find_element(By.XPATH, "//*[text()='ADD TO CART']").click()
+        #Verificando item
+        driver.find_element(By.XPATH, "//*[@class='shopping_cart_link fa-layers fa-fw']").click()
+        time.sleep(5)
 
-#Verificando item
-browser.find_element(By.XPATH, "//*[@class='shopping_cart_link fa-layers fa-fw']").click()
-time.sleep(5)
+        #Retornando ao shopping
+        driver.find_element(By.XPATH, "//*[@class='btn_secondary']").click()
 
-#Retornando ao shopping
-browser.find_element(By.XPATH, "//*[@class='btn_secondary']").click()
+        #Add outro item.
+        driver.find_element(By.XPATH, "//*[@class='inventory_item_name' and text() = 'Sauce Labs Onesie']").click()
+        driver.find_element(By.XPATH, "//*[text()='ADD TO CART']").click()
 
-#Add outro item.
-browser.find_element(By.XPATH, "//*[@class='inventory_item_name' and text() = 'Sauce Labs Onesie']").click()
-browser.find_element(By.XPATH, "//*[text()='ADD TO CART']").click()
-
-#Verificando itens
-browser.find_element(By.XPATH, "//*[@class='shopping_cart_link fa-layers fa-fw']").click()
-time.sleep(5)
+        #Verificando itens
+        driver.find_element(By.XPATH, "//*[@class='shopping_cart_link fa-layers fa-fw']").click()
+        time.sleep(5)
