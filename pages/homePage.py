@@ -14,17 +14,13 @@ class HomePage(BasePage):
 
 
     def verificar_login(self, user, pword):
-        return self.visivel(self.titulo_pagina)
+        return self.verificar_se_elemento_existe(self.titulo_pagina)
     
     def adicionar_ao_carrinho(self, nome_item):
         item = (self.item_inventario[0], self.item_inventario[1].format(nome_item))
         self.clicar(item)
         self.clicar(self.btn_add_ao_carrinho)
 
-    def verificar_item_adicionado(self):
+    def acessar_cartpage(self):
         self.clicar(self.lista_itens_adicionados)
-
-    def retornar_a_homepage(self):
-        self.clicar(self.btn_retornar_a_home)
-
          
